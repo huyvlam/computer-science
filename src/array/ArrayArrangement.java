@@ -5,10 +5,8 @@ import java.util.HashSet;
 public class ArrayArrangement {
     /**
      * Rearrange Array Value To Match Its Index
-     * @perform Time O(n)
-     * @see https://www.geeksforgeeks.org/rearrange-array-arri/
-     * @desc rearrange the array by matching value to index such that A[i] = i
-     *       if the index has no assigned value, set it to -1
+     * @desc 	rearrange array by placing element at the index that matches its value, such that A[i] = i
+     *       	empty index has "-1" as value
      */
     public static void placeValueToIndex(int[] A) {
         //loop thru array
@@ -40,12 +38,10 @@ public class ArrayArrangement {
     }
     
     /**
-     * Arrange Value To Its Index (using HashSet)
-     * @note this approach store all values in hash set then place the value in hash set to its correct index
-     * @perform Time O(n) Space O(n)
-     * @see https://www.geeksforgeeks.org/rearrange-array-arri/
-     * @desc rearrange the array to match value to index such that A[i] = i
-     *       if A[i] is not assigned value, leave it
+     * Rearrange Array Value To Match Its Index
+     * @desc	rearrange array by placing element at the index that matches its value, such that A[i] = i
+     *       	empty index has "-1" as value
+     * @note	this alternative approach store all values in hash set then place the value in hash set to its correct index
      */
     public static void placeValueToIndexAlt(int[] A) {
         HashSet<Integer> set = new HashSet<>();
@@ -57,27 +53,31 @@ public class ArrayArrangement {
         for (int j = 0; j < A.length; j++)
             A[j] = (set.contains(j)) ? j : -1;
     }
-
+    
     /**
-     * @see https://www.geeksforgeeks.org/segregate-0s-and-1s-in-an-array-by-traversing-array-once/
-     * @desc segregate 0 & 1 in the array -> place all 0 on the left, 1 on the right 
+     * Segregate Elements By Value
+     * @desc Given an array with values of "0" & "1", segregate these elements such that: 
+     * 		 1. group of "0" are placed on the left
+     * 		 2. group of "1" are on the right
      */
-    public static void segregateValues(int[] A) {
-        int right = A.length - 1;
-        
-        for (int left = 0; left < right; left++) {
-            boolean loop = false;
-            
-            do {
-                if (A[left] == 1 && A[right] == 0) {
-                    A[right--] = 1;
-                    A[left] = 0;
-                    loop = false;
-                } else if (A[left] == 1 && A[right] == 1) {
-                    right--;
-                    loop = true;
-                }
-            } while (loop && left < right);
-        }
-    }    
+    public static void segregateByValue(int[] A, int leftVal, int rightVal) {
+    	int right = A.length - 1;
+    	for (int left = 0; left < right; left++) {
+    		boolean searching = false;
+    		
+    		do {
+            	// left element has "right value", right has "left value" -> swap their position
+    			if (A[left] == rightVal && A[right] == leftVal) {
+    				A[left] = leftVal;
+    				A[right--] = rightVal;
+    				searching = false;
+
+    			// both left & right element have "left value" -> check the next right element
+    			} else if (A[left] == rightVal && A[right] == rightVal) {
+    				right--;
+    				searching = true;
+    			}
+    		} while (searching && left < right);
+    	}
+    }
 }

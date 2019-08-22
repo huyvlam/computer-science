@@ -6,9 +6,9 @@ import java.util.List;
 
 public class ArrayDemo {
 	public static void main(String[] args) {
-		matchSequence();
+//		matchSequence();
 //		valueToIndex();
-//		segregate();
+		segregateByValue();
 	}
 
 	public static void valueToIndex() {
@@ -24,14 +24,15 @@ public class ArrayDemo {
         DemoUtil.printIntArray(A);
     }
 
-	public static void segregate() {
-        int[] A = {0, 1, 1, 0, 1, 0, 0, 1, 0};
+	public static void segregateByValue() {
+        int[] A = {9, 2, 2, 2, 9, 9, 2, 9, 2, 9};
+        int leftValue = 9, rightValue = 2;
         
-        System.out.println("\nSegregate element of value 0 to left, 1 to right.");
+        System.out.println("\nSegregate elements by their same value, " + leftValue + "-left " + rightValue + "-right");
         System.out.println(">>");
         DemoUtil.printIntArray(A);
 
-        ArrayArrangement.segregateValues(A);
+        ArrayArrangement.segregateByValue(A, 2, 9);
         System.out.println("\n<<");
         DemoUtil.printIntArray(A);
     }
@@ -42,7 +43,7 @@ public class ArrayDemo {
 		String[] C = {"Three", "Four", "Six", "Seven", "One"};
 		String[] D = {"One", "Eight", "Three", "Two", "Four", "Six", "Five"};
 	    
-	    List[] sequence = ArraySequence.findMatchingSequence(B, C);
+	    List<List<String>>[] sequence = ArraySequence.findMatchingSequence(B, C);
 	    for (List seq: sequence) {
 	    	for (String item: (String[]) seq.toArray(new String[] {}))
                 System.out.print(item + " ");

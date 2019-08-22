@@ -29,6 +29,6 @@ public class DemoUtil {
     
     public static void printIntArray(int[] A) {
     	for (int a: A) 
-    		System.out.println(a);
+    		System.out.print(a + " ");
     }
 }
