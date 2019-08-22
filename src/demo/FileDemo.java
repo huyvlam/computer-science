@@ -3,8 +3,8 @@ import file.*;
 
 public class FileDemo {
 	public static void main(String[] args) {
-		largestFile(".", 10);
-		printContent(".");
+		largestFile(".", 20);
+//		printContent(".");
 	}
 	
 	public static void largestFile(String dir, int numOfFile) {

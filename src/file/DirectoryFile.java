@@ -2,14 +2,16 @@ package file;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Comparator;
 import java.util.PriorityQueue;
 
-// Given a directory, this class will traverse thru all folders, files to find the largest filesize
+/**
+ * DirectoryFile perform read operation on files, folders of a given directory
+ */
 public class DirectoryFile {
 	private static PriorityQueue<Integer> heap;
 	private static int HEAP_CAPACITY;
 	
+	// Find the largest filesize in the specified directory
 	// Create a heap to store filesize in natural order
 	public static Integer[] getLargestFile(String dir, int numberOfFile) {
 		HEAP_CAPACITY = numberOfFile;
@@ -31,18 +33,16 @@ public class DirectoryFile {
 				int filesize = (int) content.length();
 
 				if (heap.size() < HEAP_CAPACITY) {
-					System.out.println("add " + filesize);
 					heap.add(filesize);
 				} else if (heap.peek() != null && heap.peek() < filesize) {
-					if (heap.size() == HEAP_CAPACITY) {
-						
-						System.out.println("poll " + heap.poll());
-					}
-					System.out.println("add " + filesize);
+					if (heap.size() == HEAP_CAPACITY) 
+						heap.poll();
+
 					heap.add(filesize);
 				}
 			}
 		}
+
 		return (Integer[]) heap.toArray(new Integer[] {});
 	}
 	
