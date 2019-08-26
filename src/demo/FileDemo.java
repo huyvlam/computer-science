@@ -1,5 +1,5 @@
 package demo;
-import file.*;
+import problem.*;
 
 public class FileDemo {
 	public static void main(String[] args) {

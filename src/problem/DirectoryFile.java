@@ -1,11 +1,11 @@
-package file;
+package problem;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.PriorityQueue;
 
 /**
- * DirectoryFile perform read operation on files, folders of a given directory
+ * @desc: perform read operation on files, folders of a given directory
  */
 public class DirectoryFile {
 	private static PriorityQueue<Integer> heap;

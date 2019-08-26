@@ -22,7 +22,7 @@ public class Permutation {
 		return String.copyValueOf(chars);
 	}
 	
-	public static void permute(String input) {
+	public static void permuteString(String input) {
 		if (input.length() == 1) return;
 		
 		permute(input, 0, input.length() - 1);

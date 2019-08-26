@@ -25,15 +25,14 @@ public class ArraySequence {
                 int entryIndex = map.get(entry);
 
                 // if previous index is 1 less than the current index
-                // -> 1. if true, a sequence exist
-                //		-> add current entry to the existing sequence
+                // -> sequence exists already, add current entry to the sequence
                 if (prevIndex + 1 == entryIndex) {
                     List<String> currentSeq = match.peek();
                     currentSeq.add(entry);
 
-                // -> 2. if false, initialize a new sequence, 
-                //		-> add entry to new sequence
-                //		-> add sequence to match list
+                // if no sequence exists, initialize a new sequence, 
+                // -> add entry to new sequence
+                // -> add sequence to match list
                 } else {
                     List<String> sequence = new LinkedList<>();
                     sequence.add(entry);

@@ -8,7 +8,13 @@ public class ArrayDemo {
 	public static void main(String[] args) {
 //		matchSequence();
 //		valueToIndex();
-		segregateByValue();
+//		segregateByValue();
+		findRepeated();
+	}
+	
+	public static void findRepeated() {
+		int[] repeats = ArrayQuery.findRepeated(new int[] {1,6,5,5,4,3,4}, 5);
+		DemoUtil.printIntArray(repeats);
 	}
 
 	public static void valueToIndex() {
