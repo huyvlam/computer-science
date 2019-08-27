@@ -10,10 +10,6 @@ public class Trie {
 		root = new TrieNode(' ');
 	}
 	
-	// ADD
-	//	1. start w/ root
-	//	2. check if node has value
-	
 	public void add(String word) {
 		TrieNode current = root; // start w/ root node
 		TrieNode existed = null;
@@ -85,8 +81,10 @@ public class Trie {
         return false;
 	}
 	
-	// Check and return the status of any given word
-	// @return "not found" | "complete" | "partial"
+	/**
+	 * @desc	check and return the status of any given word
+	 * @return	"not found" | "complete" | "partial"
+	 */
 	public String checkStatus(String word) {
 		TrieNode current = root;
 

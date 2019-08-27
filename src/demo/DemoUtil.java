@@ -27,6 +27,11 @@ public class DemoUtil {
         return output;
     }
     
+    public static <T> void printArray(T[] list) {
+    	for (T item: list) 
+    		System.out.println(item);
+    }
+    
     public static void printIntArray(int[] A) {
     	for (int a: A) 
     		System.out.print(a + " ");
