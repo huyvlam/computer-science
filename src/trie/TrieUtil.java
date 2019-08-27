@@ -8,7 +8,7 @@ public class TrieUtil {
 	
 	public static int getAlphabetIndex(char character) {
 		for (int i = 0; i < ALPHABET.length; i++) 
-			if (ALPHABET[i] == character) 
+			if (ALPHABET[i] == Character.toLowerCase(character)) 
 				return i;
 		
 		return -1;
