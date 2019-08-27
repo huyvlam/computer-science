@@ -1,7 +1,7 @@
 package demo;
 import problem.*;
 
-public class FileDemo {
+public class DirectoryFileDemo {
 	public static void main(String[] args) {
 		largestFile(".", 20);
 //		printContent(".");
