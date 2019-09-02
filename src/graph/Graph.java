@@ -20,7 +20,7 @@ public class Graph {
 	
     public void fillVertices(String[] vertList) {
     	for (int i = 0; i < vertList.length; i++) 
-    		vertices.addName(vertList[i], i);
+    		vertices.addVertex(vertList[i], i);
     }
     
     public String[] topology() {
@@ -32,7 +32,7 @@ public class Graph {
     		if (current == -1) 
     			return null;
     		
-    		topoSort[size - 1] = vertices.getName(current);
+    		topoSort[size - 1] = vertices.getVertex(current);
     		deleteVertex(current);
     	}
     	
@@ -41,15 +41,13 @@ public class Graph {
     
     /**
      * @desc	1. pivot matrix row one up at the specified index
-     * 			2. pivot column one left at the specified index
+     * 			2. pivot matrix column one left at the specified index
      * 			3. pivot vertices one left at the specified index
      * @param index
      */
 	private void deleteVertex(int index) {
-		if (index != size - 1) {
-			vertices.deleteVertex(index);
-			matrix.deleteVertex(index);
-		}
+		vertices.deleteVertex(index);
+		matrix.deleteVertex(index);
 		size--;
 	}
 }

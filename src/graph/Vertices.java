@@ -11,11 +11,15 @@ public class Vertices {
     	names = new String[size];
     }
     
-    public String getName(int index) {
+    public void addVertex(String name, int index) {
+        names[index] = name;
+    }
+    
+    public String getVertex(int index) {
     	return names[index];
     }
 
-    public void printName(int index) {
+    public void printVertex(int index) {
         System.out.print(names[index]);
     }
         
@@ -27,22 +31,26 @@ public class Vertices {
         return -1;
     }
     
-    public void addName(String name, int index) {
-        names[index] = name;
+    private boolean isLastIndex(int index) {
+    	return index == size - 1;
     }
     
     /**
      * @desc	1. remove specified vertex by pivoting list and move specified vertex to the end
      * 			2. place the deleted row at the end
+     * 			3. decrement the size to mark out of bound element as deleted
      * @param 	vertex index to delete
      * @param 	matrix is where the vertex is removed from
      */
     public void deleteVertex(int index) {
-    	String deleted = names[index];
-    	for (int vertex = index; vertex < names.length; vertex++) 
-    		names[vertex] = names[(vertex + 1) % names.length];
+    	// if deleted is the last element -> no need to pivot, just decrement the size
+    	if (!isLastIndex(index)) {
+        	String deleted = names[index];
+        	for (int vertex = index; vertex < names.length; vertex++) 
+        		names[vertex] = names[(vertex + 1) % names.length];
 
-    	names[names.length - 1] = deleted;
+        	names[names.length - 1] = deleted;    		
+    	}
     	size--;
     }
 }

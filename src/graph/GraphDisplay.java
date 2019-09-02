@@ -11,7 +11,7 @@ public class GraphDisplay extends Graph {
 		System.out.println("- BFS Matrix -");
 
 		for (int vertex: visited) {
-			vertices.printName(vertex);
+			vertices.printVertex(vertex);
 			System.out.print(" ");
 		}
 		
@@ -24,7 +24,7 @@ public class GraphDisplay extends Graph {
 		System.out.println("- DFS Matrix -");
 
 		for (int vertex: visited) {
-			vertices.printName(vertex);
+			vertices.printVertex(vertex);
 			System.out.print(" ");
 		}
 		
@@ -33,8 +33,14 @@ public class GraphDisplay extends Graph {
     
     public void printTopology() {
     	String[] adjacents = topology();
-    	for (String vertName: adjacents) 
-    		System.out.println(vertName + "-");
+    	
+    	System.out.println("- Topological sort -");
+    	for (int i = 0; i < adjacents.length; i++) {
+    		System.out.print(adjacents[i]);
+    		if (i < adjacents.length - 1) 
+    			System.out.print("-");
+    	}
+    	System.out.println();
     }
 
     public void printBFSConnectedComponents() {
@@ -47,7 +53,7 @@ public class GraphDisplay extends Graph {
             
             for (int i = 0; i < components.length; i++) {
                 for (int vertex: components[i]) {
-                    vertices.printName(vertex);
+                    vertices.printVertex(vertex);
                     System.out.print(" ");
                 }
 
@@ -68,7 +74,7 @@ public class GraphDisplay extends Graph {
             
             for (int i = 0; i < components.length; i++) {
                 for (int vertex: components[i]) {
-                	vertices.printName(vertex);
+                	vertices.printVertex(vertex);
                     System.out.print(" ");
                 }
 
@@ -88,9 +94,9 @@ public class GraphDisplay extends Graph {
             System.out.println("- BFS Minimum Span Tree [minimum edges] -");
             for (String edge: edges) {
             	String[] adjacents = edge.split("-");
-            	vertices.printName(Integer.parseInt(adjacents[0]));
+            	vertices.printVertex(Integer.parseInt(adjacents[0]));
             	System.out.print("-");
-            	vertices.printName(Integer.parseInt(adjacents[1]));
+            	vertices.printVertex(Integer.parseInt(adjacents[1]));
                 System.out.print(" ");
             }
         }
@@ -106,9 +112,9 @@ public class GraphDisplay extends Graph {
             System.out.println("- DFS Minimum Span Tree [minimum edges] -");
             for (String edge: edges) {
             	String[] adjacents = edge.split("-");
-            	vertices.printName(Integer.parseInt(adjacents[0]));
+            	vertices.printVertex(Integer.parseInt(adjacents[0]));
             	System.out.print("-");
-            	vertices.printName(Integer.parseInt(adjacents[1]));
+            	vertices.printVertex(Integer.parseInt(adjacents[1]));
                 System.out.print(" ");
             }
         }
@@ -118,21 +124,21 @@ public class GraphDisplay extends Graph {
     public void printMatrix() {
     	System.out.println("- Matrix -");
     	for (int row = 0; row < size; row++) {
-    		vertices.printName(row);
+    		vertices.printVertex(row);
     		System.out.print(" - ");
 
     		for (int col = 0; col < size; col++) {
     			if (col == row || !matrix.isEdge(row, col)) 
     				System.out.print("x");
     			else 
-    				vertices.printName(col);
+    				vertices.printVertex(col);
 
     			if (col < size - 1) 
     				System.out.print(", ");
     		}
     		System.out.println();
     	}
-    			
+    	System.out.println();
     }
     
     public void printBFSConnectivity() {
@@ -141,7 +147,7 @@ public class GraphDisplay extends Graph {
         System.out.println("- Connectivity Grid -");
         for (Integer[] connectivity: grid) {
         	for (int vertex: connectivity) {
-        		vertices.printName(vertex);
+        		vertices.printVertex(vertex);
         		System.out.print("-");
         	}
             System.out.println();
@@ -154,7 +160,7 @@ public class GraphDisplay extends Graph {
         System.out.println("- Connectivity Grid -");
         for (Integer[] connectivity: grid) {
         	for (int vertex: connectivity) {
-        		vertices.printName(vertex);
+        		vertices.printVertex(vertex);
         		System.out.print("-");
         	}
             System.out.println();

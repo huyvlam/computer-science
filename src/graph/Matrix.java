@@ -221,10 +221,18 @@ public class Matrix {
 
     	return -1;
     }
-    
+
+    /**
+     * @desc	1. pivot row up by one at the specified index
+     * 			2. pivot column left by one at the specified index
+     * 			3. decrement size to mark the out of bound index as deleted
+     */
     public void deleteVertex(int index) {
-    	pivotLeft(index);
-    	pivotUp(index);
+    	// if deleted is the last element -> no need to pivot, just decrement the size
+    	if (!isLastIndex(index)) {
+        	pivotLeft(index);
+        	pivotUp(index);
+    	}
     	size--;
     }
     
@@ -289,5 +297,9 @@ public class Matrix {
 				return adj;
 		
 		return -1;
+	}
+	
+	private boolean isLastIndex(int index) {
+		return index == size - 1;
 	}
 }

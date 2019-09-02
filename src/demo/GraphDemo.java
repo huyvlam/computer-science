@@ -22,6 +22,7 @@ public class GraphDemo {
 		graph.fillVertices(vertices);
 		graph.printMatrix();
 		graph.printTopology();
+		graph.printMatrix();
 
 		String vertex = "B";
 
