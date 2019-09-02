@@ -7,7 +7,7 @@ import java.util.Stack;
 public class Matrix {
 	private int size;
 	private int[][] grids;
-	private HashMap<Integer, Integer> visitedList = new HashMap<>();
+	private HashMap<Integer, Integer> visitedList;
 	private boolean isTransitiveClosure = false;
 	
 	public Matrix(int size) {
@@ -29,7 +29,7 @@ public class Matrix {
 		LinkedList<Integer> queue = new LinkedList<>();
 		LinkedList<Integer> processed = new LinkedList<>();
 
-		resetVisitedList();
+		initVisitedList();
 		addToVisited(index);
 		queue.push(index);
 		
@@ -57,7 +57,7 @@ public class Matrix {
         Stack<Integer> stack = new Stack<>();
         LinkedList<Integer> processed = new LinkedList<>();
 
-        resetVisitedList();
+        initVisitedList();
         addToVisited(index);
         stack.push(index);
         processed.offer(index);
@@ -75,7 +75,7 @@ public class Matrix {
 
         return processed.toArray(new Integer[processed.size()]);
     }
-
+    
 	/**
      * BFS Connected Components
      * @desc 	find all connected components in an undirected graph using BFS
@@ -229,7 +229,7 @@ public class Matrix {
      */
     public void deleteVertex(int index) {
     	// if deleted is the last element -> no need to pivot, just decrement the size
-    	if (!isLastIndex(index)) {
+    	if (!lastIndex(index)) {
         	pivotLeft(index);
         	pivotUp(index);
     	}
@@ -271,8 +271,8 @@ public class Matrix {
     	return visitedList.containsKey(index);
     }
 	
-    private void resetVisitedList() {
-    	visitedList.clear();
+    private void initVisitedList() {
+    	visitedList = new HashMap<>();
     }
     
     // mark the index as visited once done to avoid cycle
@@ -299,7 +299,7 @@ public class Matrix {
 		return -1;
 	}
 	
-	private boolean isLastIndex(int index) {
+	private boolean lastIndex(int index) {
 		return index == size - 1;
 	}
 }

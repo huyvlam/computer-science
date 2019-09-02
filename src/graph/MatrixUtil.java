@@ -3,11 +3,14 @@ package graph;
 import java.util.HashMap;
 
 public class MatrixUtil {
+	private static HashMap<String, Integer> visitedList = null;
+
 	/**
 	 * @desc	Count the biggest component, or the largest region in a given matrix
 	 * @return	the size of the biggest component/largest region
 	 */
     public static int maxComponentSize(int[][] matrix) {
+    	initVisitedList();
         int count = 0;
         
         // Starting with the top left most cell, go thru each cell...
@@ -15,36 +18,36 @@ public class MatrixUtil {
         // 2. store and return the largest found
         for (int row = 0; row < matrix.length; row++) 
             for (int col = 0; col < matrix[row].length; col++) 
-                count = Math.max(count, countConnectedCell(row, col, matrix));
+                count = Math.max(count, countConnectedCell(row, col, matrix, visitedList));
         
         return count;
     }
     
-
 	/**
 	 * @desc	Count the number of island in a given matrix (any cell that is marked as 1)
 	 * @return	total count
 	 */
     public static int countIsland(int[][] matrix) {
+    	initVisitedList();
     	int count = 0;
 
     	for (int row = 0; row < matrix.length; row++) 
     		for (int col = 0; col < matrix[row].length; col++) 
-    			count += (countConnectedCell(row, col, matrix) == 0) ? 0 : 1;
+    			count += (countConnectedCell(row, col, matrix, visitedList) == 0) ? 0 : 1;
     	
     	return count;
+    }
+    
+    public static int countConnectedCell(int row, int col, int[][] matrix) {
+    	initVisitedList();
+    	return countConnectedCell(row, col, matrix, visitedList);
     }
 
     /**
 	 * @desc	Count the number of cell connected to a specified row, col 
 	 * @return	total count
 	 */
-    public static int countConnectedCell(int row, int col, int[][] matrix) {
-    	HashMap<String, Integer> visited = new HashMap<>();
-    	return countConnectedCell(row, col, matrix, visited);
-    }
-    
-    private static int countConnectedCell(int row, int col, int[][] matrix, HashMap<String, Integer> visited) {
+    private static int countConnectedCell(int row, int col, int[][] matrix, HashMap<String, Integer> visitedList) {
     	String hashed = "r" + row + "c" + col;
 
     	// check for the followings:
@@ -55,20 +58,24 @@ public class MatrixUtil {
     			|| row >= matrix.length 
     			|| col >= matrix[row].length 
     			|| matrix[row][col] == 0 
-    			|| visited.containsKey(hashed)) 
+    			|| visitedList.containsKey(hashed)) 
     		return 0;
     	
-    	visited.put(hashed, 1);
+    	visitedList.put(hashed, 1);
     	int count = matrix[row][col];
-    	count += countConnectedCell(row, col - 1, matrix, visited);
-    	count += countConnectedCell(row, col + 1, matrix, visited);
-    	count += countConnectedCell(row - 1, col - 1, matrix, visited);
-    	count += countConnectedCell(row - 1, col, matrix, visited);
-    	count += countConnectedCell(row - 1, col + 1, matrix, visited);
-    	count += countConnectedCell(row + 1, col - 1, matrix, visited);
-    	count += countConnectedCell(row + 1, col, matrix, visited);
-    	count += countConnectedCell(row + 1, col + 1, matrix, visited);
+    	count += countConnectedCell(row, col - 1, matrix, visitedList);
+    	count += countConnectedCell(row, col + 1, matrix, visitedList);
+    	count += countConnectedCell(row - 1, col - 1, matrix, visitedList);
+    	count += countConnectedCell(row - 1, col, matrix, visitedList);
+    	count += countConnectedCell(row - 1, col + 1, matrix, visitedList);
+    	count += countConnectedCell(row + 1, col - 1, matrix, visitedList);
+    	count += countConnectedCell(row + 1, col, matrix, visitedList);
+    	count += countConnectedCell(row + 1, col + 1, matrix, visitedList);
     	
     	return count;
+    }
+    
+    private static void initVisitedList() {
+    	visitedList = new HashMap<>();
     }
 }

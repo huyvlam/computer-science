@@ -31,7 +31,7 @@ public class Vertices {
         return -1;
     }
     
-    private boolean isLastIndex(int index) {
+    private boolean lastIndex(int index) {
     	return index == size - 1;
     }
     
@@ -44,7 +44,7 @@ public class Vertices {
      */
     public void deleteVertex(int index) {
     	// if deleted is the last element -> no need to pivot, just decrement the size
-    	if (!isLastIndex(index)) {
+    	if (!lastIndex(index)) {
         	String deleted = names[index];
         	for (int vertex = index; vertex < names.length; vertex++) 
         		names[vertex] = names[(vertex + 1) % names.length];
