@@ -6,13 +6,13 @@ import java.util.Stack;
 
 public class AdjacentList {
 	private int size;
-	private int[][] grids;
+	private int[][] root;
 	private HashMap<Integer, Integer> visitedList = new HashMap<>();
 	private boolean isTransitiveClosure = false;
 
 	public AdjacentList(int size) {
 		this.size = size;
-		grids = new int[size][size];
+		root = new int[size][size];
 	}
 
 	/**

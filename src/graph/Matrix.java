@@ -6,17 +6,17 @@ import java.util.Stack;
 
 public class Matrix {
 	private int size;
-	private int[][] grids;
+	private int[][] root;
 	private HashMap<Integer, Integer> visitedList;
 	private boolean isTransitiveClosure = false;
 	
 	public Matrix(int size) {
 		this.size = size;
-		grids = new int[size][size];
+		root = new int[size][size];
 	}
 	
 	public void addEdge(int source, int dest) {
-		grids[source][dest] = GraphConstant.CONNECTED;
+		root[source][dest] = GraphConstant.CONNECTED;
 	}
 	
 	/**
@@ -28,6 +28,9 @@ public class Matrix {
 	public Integer[] bfsTraverse(int index) {
 		LinkedList<Integer> queue = new LinkedList<>();
 		LinkedList<Integer> processed = new LinkedList<>();
+		
+		if (!hasSuccessor(index)) 
+			return null;
 
 		initVisitedList();
 		addToVisited(index);
@@ -56,6 +59,9 @@ public class Matrix {
     public Integer[] dfsTraverse(int index) {
         Stack<Integer> stack = new Stack<>();
         LinkedList<Integer> processed = new LinkedList<>();
+        
+        if (!hasSuccessor(index)) 
+        	return null;
 
         initVisitedList();
         addToVisited(index);
@@ -83,12 +89,13 @@ public class Matrix {
      */
     public Integer[][] bfsConnectedComponents() {
         LinkedList<Integer[]> components = new LinkedList<>();
+        initVisitedList();
         
         for (int vertex = 0; vertex < size; vertex++) 
         	if (!hasVisited(vertex)) {
         		Integer[] processed = bfsTraverse(vertex);
 
-        		if (processed.length >= 2) 
+        		if (processed != null || processed.length >= 2) 
         			components.offer(processed);
         	}
 
@@ -102,11 +109,13 @@ public class Matrix {
      */
     public Integer[][] dfsConnectedComponents() {
         LinkedList<Integer[]> components = new LinkedList<>();
+        initVisitedList();
 
         for (int vertex = 0; vertex < size; vertex++) 
         	if (!hasVisited(vertex)) {
         		Integer[] processed = dfsTraverse(vertex);
-        		if (processed.length >= 2) 
+
+        		if (processed != null || processed.length >= 2) 
         			components.offer(processed);
         	}
 
@@ -122,7 +131,7 @@ public class Matrix {
     	Integer[] processed = bfsTraverse(0);
 
     	// if only 1 vertex is found then there's no edge (i.e. should contain at least 2 vertices)
-    	if (processed.length <= 1)
+    	if (processed == null || processed.length <= 1)
     		return null;
 
         String[] edges = new String[processed.length - 1];        
@@ -141,7 +150,7 @@ public class Matrix {
     	Integer[] processed = dfsTraverse(0);
 
     	// if only 1 vertex is found then there's no edge (i.e. should contain at least 2 vertices)
-    	if (processed.length <= 1)
+    	if (processed == null || processed.length <= 1)
     		return null;
 
         String[] edges = new String[processed.length - 1];
@@ -156,12 +165,12 @@ public class Matrix {
      * @desc 	check each vertex for its connection in a directed graph
      * @return 	a table of connections for each vertex
      */
-    public Integer[][] bfsConnectivityGrid() {
-        Integer[][] grid = new Integer[size][size];
+    public Integer[][] bfsConnectivityTable() {
+        Integer[][] table = new Integer[size][size];
         for (int i = 0; i < size; i++) 
-        	grid[i] = bfsTraverse(i);
+        	table[i] = bfsTraverse(i);
                 
-        return grid;
+        return table;
     }
 
     /**
@@ -169,12 +178,12 @@ public class Matrix {
      * @desc check each vertex for its connection in a directed graph
      * @return a table of connections for each vertex
      */
-    public Integer[][] dfsConnectivityGrid() {
-        Integer[][] grid = new Integer[size][size];
+    public Integer[][] dfsConnectivityTable() {
+        Integer[][] table = new Integer[size][size];
         for (int i = 0; i < size; i++) 
-        	grid[i] = dfsTraverse(i);
+        	table[i] = dfsTraverse(i);
 
-        return grid;
+        return table;
     }
 
     /**
@@ -187,21 +196,23 @@ public class Matrix {
     	if (isTransitiveClosure) 
     		return;
 
-    	for (int row = 0; row < grids.length; row++) 
-    		for (int col = 0; col < grids[row].length; col++) 
-    			if (grids[row][col] == GraphConstant.CONNECTED) {
-    				for (int vertex = 0; vertex < grids.length; vertex++) 
-    					if (grids[vertex][row] == GraphConstant.CONNECTED) 
-    						grids[vertex][col] = GraphConstant.CONNECTED;
+    	for (int row = 0; row < root.length; row++) 
+    		for (int col = 0; col < root[row].length; col++) 
+    			if (root[row][col] == GraphConstant.CONNECTED) {
+    				for (int vertex = 0; vertex < root.length; vertex++) 
+    					if (root[vertex][row] == GraphConstant.CONNECTED) 
+    						root[vertex][col] = GraphConstant.CONNECTED;
     				
     				break;
     			}
     }
     
-    public boolean isEdge(int vertA, int vertB) {
-    	return grids[vertA][vertB] >= GraphConstant.CONNECTED;
-    }
-    
+    /**
+     * @desc	iterate thru matrix and check each vertex for connection:
+     * 			1. if no connection -> vertex has no successor -> return -1
+     * 			2. if connection found -> return vertex index
+     * @return
+     */
     public int findSuccessor() {
     	boolean edge;
 
@@ -243,11 +254,11 @@ public class Matrix {
      * @param 	matrix is where the vertex is removed from
      */
     private void pivotUp(int index) {
-    	int[] deleted = grids[index];
+    	int[] deleted = root[index];
         for (int row = index; row < size; row++) 
-        	grids[row] = grids[(row + 1) % size];
+        	root[row] = root[(row + 1) % size];
         
-        grids[size - 1] = deleted;
+        root[size - 1] = deleted;
     }
     
     /**
@@ -258,13 +269,25 @@ public class Matrix {
      */
     private void pivotLeft(int index) {
 		for (int row = 0; row < size; row++) {
-			int deleted = grids[row][index];
+			int deleted = root[row][index];
 
 			for (int col = index; col < size - 1; col++)
-    			grids[row][col] = grids[row][col + 1];
+    			root[row][col] = root[row][col + 1];
 
-			grids[row][size - 1] = deleted;
+			root[row][size - 1] = deleted;
 		}
+    }
+    
+    public boolean hasSuccessor(int index) {
+    	for (int neighbor: root[index]) 
+    		if (neighbor == 1) 
+    			return true;
+    	
+    	return false;
+    }
+    
+    public boolean isEdge(int vertA, int vertB) {
+    	return root[vertA][vertB] >= GraphConstant.CONNECTED;
     }
     
     public boolean hasVisited(int index) {
@@ -291,7 +314,7 @@ public class Matrix {
 		if (index >= size) 
 			return -1;
 
-		int[] neighbors = grids[index];
+		int[] neighbors = root[index];
 		for (int adj = 0; adj < size; adj++) 
 			if (neighbors[adj] == GraphConstant.CONNECTED && !hasVisited(adj)) 
 				return adj;

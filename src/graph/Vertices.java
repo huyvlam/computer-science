@@ -4,28 +4,28 @@ import java.util.Arrays;
 
 public class Vertices {
 	private int size;
-    private String[] names;
+    private String[] root;
     
     public Vertices(int size) {
     	this.size = size;
-    	names = new String[size];
+    	root = new String[size];
     }
     
     public void addVertex(String name, int index) {
-        names[index] = name;
+        root[index] = name;
     }
     
     public String getVertex(int index) {
-    	return names[index];
+    	return root[index];
     }
 
     public void printVertex(int index) {
-        System.out.print(names[index]);
+        System.out.print(root[index]);
     }
         
     public int findIndex(String name) {
         for (int index = 0; index < size; index++) 
-            if (name.equals(names[index]))
+            if (name.equals(root[index]))
                 return index;
         
         return -1;
@@ -45,11 +45,11 @@ public class Vertices {
     public void deleteVertex(int index) {
     	// if deleted is the last element -> no need to pivot, just decrement the size
     	if (!lastIndex(index)) {
-        	String deleted = names[index];
-        	for (int vertex = index; vertex < names.length; vertex++) 
-        		names[vertex] = names[(vertex + 1) % names.length];
+        	String deleted = root[index];
+        	for (int vertex = index; vertex < root.length; vertex++) 
+        		root[vertex] = root[(vertex + 1) % root.length];
 
-        	names[names.length - 1] = deleted;    		
+        	root[root.length - 1] = deleted;    		
     	}
     	size--;
     }

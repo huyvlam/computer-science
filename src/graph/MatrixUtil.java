@@ -3,7 +3,7 @@ package graph;
 import java.util.HashMap;
 
 public class MatrixUtil {
-	private static HashMap<String, Integer> visitedList = null;
+	private static HashMap<String, Integer> visitedList;
 
 	/**
 	 * @desc	Count the biggest component, or the largest region in a given matrix

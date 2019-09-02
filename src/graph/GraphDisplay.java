@@ -8,26 +8,32 @@ public class GraphDisplay extends Graph {
     public void printBFSTraverse(String vertName) {
     	int index = vertices.findIndex(vertName);
 		Integer[] visited = matrix.bfsTraverse(index);
-		System.out.println("- BFS Matrix -");
 
-		for (int vertex: visited) {
-			vertices.printVertex(vertex);
-			System.out.print(" ");
+		System.out.println("- BFS Traverse -");
+		if (visited == null) 
+			System.out.print(vertName + " has no connection");
+		else {
+			for (int vertex: visited) {
+				vertices.printVertex(vertex);
+				System.out.print(" ");
+			}			
 		}
-		
 		System.out.println();
 	}
     
     public void printDFSTraverse(String vertName) {
     	int index = vertices.findIndex(vertName);
 		Integer[] visited = matrix.dfsTraverse(index);
-		System.out.println("- DFS Matrix -");
 
-		for (int vertex: visited) {
-			vertices.printVertex(vertex);
-			System.out.print(" ");
+		System.out.println("- DFS Traverse -");
+		if (visited == null) 
+			System.out.print(vertName + " has no connection");
+		else {
+			for (int vertex: visited) {
+				vertices.printVertex(vertex);
+				System.out.print(" ");
+			}
 		}
-		
 		System.out.println();
 	}
     
@@ -142,28 +148,44 @@ public class GraphDisplay extends Graph {
     }
     
     public void printBFSConnectivity() {
-    	Integer[][] grid = matrix.bfsConnectivityGrid();
+    	Integer[][] table = matrix.bfsConnectivityTable();
 
-        System.out.println("- Connectivity Grid -");
-        for (Integer[] connectivity: grid) {
-        	for (int vertex: connectivity) {
-        		vertices.printVertex(vertex);
-        		System.out.print("-");
+        System.out.println("- BFS Connectivity Grid -");
+        for (int row = 0; row < table.length; row++) {
+        	if (table[row] != null) {
+            	for (int col = 0; col < table[row].length; col++) {
+            		vertices.printVertex(table[row][col]);
+            		
+            		if (col < table[row].length - 1) 
+            			System.out.print("-");
+            	}
+            	System.out.println();
         	}
-            System.out.println();
         }
     }
     
     public void printDFSConnectivity() {
-    	Integer[][] grid = matrix.dfsConnectivityGrid();
+    	Integer[][] table = matrix.dfsConnectivityTable();
 
-        System.out.println("- Connectivity Grid -");
-        for (Integer[] connectivity: grid) {
-        	for (int vertex: connectivity) {
-        		vertices.printVertex(vertex);
-        		System.out.print("-");
+        System.out.println("- DFS Connectivity Grid -");
+        for (int row = 0; row < table.length; row++) {
+        	if (table[row] != null) {
+            	for (int col = 0; col < table[row].length; col++) {
+            		vertices.printVertex(table[row][col]);
+            		
+            		if (col < table[row].length - 1) 
+            			System.out.print("-");
+            	}
+            	System.out.println();
         	}
-            System.out.println();
         }
+//        for (Integer[] connections: table) {
+//        	for (int i = 0; i < connections.length; i++) {
+//        		vertices.printVertex(connections[i]);
+//        		if (i < connections.length - 1) 
+//        			System.out.print("-");
+//        	}
+//            System.out.println();
+//        }
     }
 }
