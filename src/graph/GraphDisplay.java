@@ -5,7 +5,7 @@ public class GraphDisplay extends Graph {
 		super(size);
     }
 	
-    public void printBFSMatrix(String vertName) {
+    public void printBFSTraverse(String vertName) {
     	int index = vertices.findIndex(vertName);
 		Integer[] visited = matrix.bfsTraverse(index);
 		System.out.println("- BFS Matrix -");
@@ -18,7 +18,7 @@ public class GraphDisplay extends Graph {
 		System.out.println();
 	}
     
-    public void printDFSMatrix(String vertName) {
+    public void printDFSTraverse(String vertName) {
     	int index = vertices.findIndex(vertName);
 		Integer[] visited = matrix.dfsTraverse(index);
 		System.out.println("- DFS Matrix -");
@@ -30,6 +30,12 @@ public class GraphDisplay extends Graph {
 		
 		System.out.println();
 	}
+    
+    public void printTopology() {
+    	String[] adjacents = topology();
+    	for (String vertName: adjacents) 
+    		System.out.println(vertName + "-");
+    }
 
     public void printBFSConnectedComponents() {
         Integer[][] components = matrix.bfsConnectedComponents();
@@ -116,7 +122,7 @@ public class GraphDisplay extends Graph {
     		System.out.print(" - ");
 
     		for (int col = 0; col < size; col++) {
-    			if (col == row || !matrix.areConnected(row, col)) 
+    			if (col == row || !matrix.isEdge(row, col)) 
     				System.out.print("x");
     			else 
     				vertices.printName(col);

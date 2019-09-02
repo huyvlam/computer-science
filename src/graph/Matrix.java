@@ -198,23 +198,24 @@ public class Matrix {
     			}
     }
     
-    public boolean areConnected(int vertA, int vertB) {
+    public boolean isEdge(int vertA, int vertB) {
     	return grids[vertA][vertB] >= GraphConstant.CONNECTED;
     }
     
     public int findSuccessor() {
-    	boolean isEdge;
+    	boolean edge;
 
     	for (int row = 0; row < size; row++) {
-    		isEdge = false;
+    		edge = false;
 
-    		for (int col = 0; col < size; col++) 
-    			if (grids[row][col] == GraphConstant.CONNECTED) {
-    				isEdge = true;
+    		for (int col = 0; col < size; col++) {
+    			edge = isEdge(row, col);
+    			
+    			if (edge)
     				break;
-    			}
+    		}
     		
-    		if (!isEdge) 
+    		if (!edge) 
     			return row;    		
     	}
 
@@ -258,7 +259,6 @@ public class Matrix {
 		}
     }
     
-    /********** **********/
     public boolean hasVisited(int index) {
     	return visitedList.containsKey(index);
     }

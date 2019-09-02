@@ -23,19 +23,33 @@ public class Graph {
     		vertices.addName(vertList[i], i);
     }
     
+    public String[] topology() {
+    	String[] topoSort = new String[size];
+
+    	while (size > 0) {
+    		int current = matrix.findSuccessor();
+
+    		if (current == -1) 
+    			return null;
+    		
+    		topoSort[size - 1] = vertices.getName(current);
+    		deleteVertex(current);
+    	}
+    	
+    	return topoSort;
+    }
+    
     /**
      * @desc	1. pivot matrix row one up at the specified index
      * 			2. pivot column one left at the specified index
      * 			3. pivot vertices one left at the specified index
      * @param index
      */
-	public void deleteVertex(String vertName) {
-		int index = vertices.findIndex(vertName);
-
+	private void deleteVertex(int index) {
 		if (index != size - 1) {
 			vertices.deleteVertex(index);
 			matrix.deleteVertex(index);
-			size--;
 		}
+		size--;
 	}
 }
