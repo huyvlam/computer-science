@@ -92,17 +92,16 @@ public class GraphDisplay extends Graph {
     }
 
     public void printBFSMinimumEdges() {
-        String[] edges = matrix.bfsMinimumEdges();
+        Edge[] edges = matrix.bfsMinimumEdges();
         
         if (edges == null) 
             System.out.println("- No minimum span tree -");
         else {
-            System.out.println("- BFS Minimum Span Tree [minimum edges] -");
-            for (String edge: edges) {
-            	String[] adjacents = edge.split("-");
-            	vertices.printVertex(Integer.parseInt(adjacents[0]));
+            System.out.println("- BFS Minimum Edges [unweighed MST] -");
+            for (Edge edge: edges) {
+            	vertices.printVertex(edge.source);
             	System.out.print("-");
-            	vertices.printVertex(Integer.parseInt(adjacents[1]));
+            	vertices.printVertex(edge.destination);
                 System.out.print(" ");
             }
         }
@@ -110,17 +109,16 @@ public class GraphDisplay extends Graph {
     }
     
     public void printDFSMinimumEdges() {
-        String[] edges = matrix.dfsMinimumEdges();
+        Edge[] edges = matrix.dfsMinimumEdges();
         
         if (edges == null) 
             System.out.println("- No minimum span tree -");
         else {
-            System.out.println("- DFS Minimum Span Tree [minimum edges] -");
-            for (String edge: edges) {
-            	String[] adjacents = edge.split("-");
-            	vertices.printVertex(Integer.parseInt(adjacents[0]));
+            System.out.println("- DFS Minimum Edges [unweighed MST] -");
+            for (Edge edge: edges) {
+            	vertices.printVertex(edge.source);
             	System.out.print("-");
-            	vertices.printVertex(Integer.parseInt(adjacents[1]));
+            	vertices.printVertex(edge.destination);
                 System.out.print(" ");
             }
         }
@@ -134,10 +132,7 @@ public class GraphDisplay extends Graph {
     		System.out.print(" - ");
 
     		for (int col = 0; col < size; col++) {
-    			if (col == row || !matrix.isEdge(row, col)) 
-    				System.out.print("x");
-    			else 
-    				vertices.printVertex(col);
+    			System.out.print(matrix.root[row][col]);
 
     			if (col < size - 1) 
     				System.out.print(", ");
@@ -179,13 +174,5 @@ public class GraphDisplay extends Graph {
             	System.out.println();
         	}
         }
-//        for (Integer[] connections: table) {
-//        	for (int i = 0; i < connections.length; i++) {
-//        		vertices.printVertex(connections[i]);
-//        		if (i < connections.length - 1) 
-//        			System.out.print("-");
-//        	}
-//            System.out.println();
-//        }
     }
 }

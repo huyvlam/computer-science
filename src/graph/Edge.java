@@ -1,13 +1,13 @@
 package graph;
 
 public class Edge {
-	public int sourceIndex;
-	public int destIndex;
+	public int source;
+	public int destination;
 	public int weight;
 
     public Edge(int sourceIndex, int destIndex, int weight) {
-        this.sourceIndex = sourceIndex;
-        this.destIndex = destIndex;
+        source = sourceIndex;
+        destination = destIndex;
         this.weight = weight;
     }
 }

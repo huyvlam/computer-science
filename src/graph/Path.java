@@ -1,11 +1,11 @@
 package graph;
 
 public class Path {
-    public int sourceIndex;
-    public int weight;
-    
-    public Path(int sourceIndex, int weight) {
-        this.sourceIndex = sourceIndex;
-        this.weight = weight;
-    }
+	public int layover;
+	public int weight;
+	
+	public Path(int vertex, int weight) {
+		layover = vertex;
+		this.weight = weight;
+	}
 }

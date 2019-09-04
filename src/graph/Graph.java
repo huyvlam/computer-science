@@ -1,5 +1,10 @@
 package graph;
 
+/**
+ * Directed Graph w/o weight
+ * @author huyster
+ *
+ */
 public class Graph {
 	public int size;
 	public Matrix matrix;
@@ -14,8 +19,8 @@ public class Graph {
 	public void fillMatrix(int[][] adjMatrix) {
 		for (int row = 0; row < size; row++) 
 			for (int col = 0; col < size; col++) 
-				if (adjMatrix[row][col] == GraphConstant.CONNECTED) 
-					matrix.addEdge(row, col);
+				if (adjMatrix[row][col] >= Vertex.CONNECTED) 
+					matrix.addEdge(row, col, adjMatrix[row][col]);
 	}
 	
     public void fillVertices(String[] vertList) {

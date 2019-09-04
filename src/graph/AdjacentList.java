@@ -83,7 +83,7 @@ public class AdjacentList {
     
     // mark the index as visited once done to avoid cycle
 	private void addToVisited(int index) {
-		visitedList.put(index, GraphConstant.VISITED);
+		visitedList.put(index, Vertex.VISITED);
 	}
 
 	/**

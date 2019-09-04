@@ -3,6 +3,8 @@ package demo;
 import graph.*;
 import java.util.HashMap;
 
+import java.util.PriorityQueue;
+
 public class GraphDemo {
 	public static void main(String[] args) {
 		String[] vertices = {"A", "B", "C", "D", "E", "F", "G", "H"};
@@ -46,5 +48,5 @@ public class GraphDemo {
 
 		graph.printTopology();
 		System.out.println();
-}
+	}
 }

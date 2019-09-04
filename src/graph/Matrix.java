@@ -5,8 +5,8 @@ import java.util.LinkedList;
 import java.util.Stack;
 
 public class Matrix {
-	private int size;
-	private int[][] root;
+	public int size;
+	public int[][] root;
 	private HashMap<Integer, Integer> visitedList;
 	private boolean isTransitiveClosure = false;
 	
@@ -15,8 +15,8 @@ public class Matrix {
 		root = new int[size][size];
 	}
 	
-	public void addEdge(int source, int dest) {
-		root[source][dest] = GraphConstant.CONNECTED;
+	public void addEdge(int source, int dest, int weight) {
+		root[source][dest] = weight;
 	}
 	
 	/**
@@ -127,18 +127,18 @@ public class Matrix {
      * @desc 	find the minimum number of edges that connect all vertices in a connected graph
      * @return 	a list of edges or null
      */
-    public String[] bfsMinimumEdges() {
+    public Edge[] bfsMinimumEdges() {
     	Integer[] processed = bfsTraverse(0);
+    	LinkedList<Edge> edges = new LinkedList<>();
 
     	// if only 1 vertex is found then there's no edge (i.e. should contain at least 2 vertices)
     	if (processed == null || processed.length <= 1)
     		return null;
 
-        String[] edges = new String[processed.length - 1];        
         for (int i = 0; i < processed.length - 1; i++) 
-        	edges[i] = i + "-" + processed[i + 1];
+        	edges.offer(new Edge(i, processed[i + 1], 0));
         
-        return edges;
+        return edges.toArray(new Edge[edges.size()]);
     }
 
     /**
@@ -146,18 +146,18 @@ public class Matrix {
      * @desc 	find the minimum number of edges that connect all vertices in a connected graph
      * @return 	a list of edges or null
      */
-    public String[] dfsMinimumEdges() {
+    public Edge[] dfsMinimumEdges() {
     	Integer[] processed = dfsTraverse(0);
+    	LinkedList<Edge> edges = new LinkedList<>();
 
     	// if only 1 vertex is found then there's no edge (i.e. should contain at least 2 vertices)
     	if (processed == null || processed.length <= 1)
     		return null;
 
-        String[] edges = new String[processed.length - 1];
         for (int i = 0; i < processed.length - 1; i++) 
-        	edges[i] = i + "-" + processed[i + 1];
+        	edges.offer(new Edge(i, processed[i + 1], 0));
         
-        return edges;
+        return edges.toArray(new Edge[edges.size()]);
     }
 
     /**
@@ -198,10 +198,10 @@ public class Matrix {
 
     	for (int row = 0; row < root.length; row++) 
     		for (int col = 0; col < root[row].length; col++) 
-    			if (root[row][col] == GraphConstant.CONNECTED) {
+    			if (root[row][col] >= Vertex.CONNECTED) {
     				for (int vertex = 0; vertex < root.length; vertex++) 
-    					if (root[vertex][row] == GraphConstant.CONNECTED) 
-    						root[vertex][col] = GraphConstant.CONNECTED;
+    					if (root[vertex][row] >= Vertex.CONNECTED) 
+    						root[vertex][col] = root[vertex][row];
     				
     				break;
     			}
@@ -287,7 +287,7 @@ public class Matrix {
     }
     
     public boolean isEdge(int vertA, int vertB) {
-    	return root[vertA][vertB] >= GraphConstant.CONNECTED;
+    	return root[vertA][vertB] >= Vertex.CONNECTED;
     }
     
     public boolean hasVisited(int index) {
@@ -300,7 +300,7 @@ public class Matrix {
     
     // mark the index as visited once done to avoid cycle
 	private void addToVisited(int index) {
-		visitedList.put(index, GraphConstant.VISITED);
+		visitedList.put(index, Vertex.VISITED);
 	}
 
 	/**
@@ -316,7 +316,7 @@ public class Matrix {
 
 		int[] neighbors = root[index];
 		for (int adj = 0; adj < size; adj++) 
-			if (neighbors[adj] == GraphConstant.CONNECTED && !hasVisited(adj)) 
+			if (neighbors[adj] >= Vertex.CONNECTED && !hasVisited(adj)) 
 				return adj;
 		
 		return -1;
