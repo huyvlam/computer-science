@@ -27,7 +27,7 @@ public class WeightMatrix extends Matrix {
 	}
 	
 	/*
-	 * @desc	find the lightest path from specified vertex to every other vertex
+	 * @desc	find the lightest path from one vertex to another
 	 * @param	index of starting vertex
 	 */
 	public Path[] lightestPath(int index) {

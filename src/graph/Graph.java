@@ -1,7 +1,7 @@
 package graph;
 
 /**
- * Directed Graph w/o weight
+ * Unweight Directed Graph
  * @author huyster
  *
  */
