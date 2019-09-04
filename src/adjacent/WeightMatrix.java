@@ -1,7 +1,4 @@
-package weightgraph;
-
-import graph.Path;
-import graph.Vertex;
+package adjacent;
 
 import java.util.PriorityQueue;
 import java.util.HashMap;
@@ -9,16 +6,13 @@ import java.util.LinkedList;
 import java.util.Comparator;
 import java.util.Iterator;
 
-import graph.Matrix;
-import graph.Edge;
-
-public class WeightMatrix extends Matrix {
+public class WeightMatrix extends AdjMatrixBase {
 	private PriorityQueue<Edge> candidates; // list of fringe vertex
 	private HashMap<Integer, Integer> selectedTree;
-	private boolean isTransitiveClosure = false;
 
 	public WeightMatrix(int size) {
-		super(size);
+		this.size = size;
+		matrix = new int[size][size];
 		candidates = new PriorityQueue<Edge>(size - 1, new Comparator<Edge>() {
 			public int compare(Edge A, Edge B) {
 				return ((Integer) A.weight).compareTo(B.weight);
@@ -67,14 +61,14 @@ public class WeightMatrix extends Matrix {
 
         for (int row = 0; row < size; row++) 
         	for (int col = 0; col < size; col++) 
-        		if (root[row][col] >= Vertex.CONNECTED)
+        		if (matrix[row][col] >= Vertex.CONNECTED)
         			for (int i = 0; i < size; i++) 
-        				if (root[i][row] >= Vertex.CONNECTED) {
-        					int combinedWeight = root[row][col] + root[i][row];
-        					int currentWeight = root[i][col];
+        				if (matrix[i][row] >= Vertex.CONNECTED) {
+        					int combinedWeight = matrix[row][col] + matrix[i][row];
+        					int currentWeight = matrix[i][col];
         					
         					if (currentWeight == Vertex.UNCONNECTED || currentWeight > combinedWeight) 
-        						root[i][col] = combinedWeight;
+        						matrix[i][col] = combinedWeight;
         				}
 
         isTransitiveClosure = true;
@@ -99,7 +93,7 @@ public class WeightMatrix extends Matrix {
 					continue;
 				
 				// check candidate list for edge with same destination before adding
-				addCandidate(source, destination, root[source][destination]);
+				addCandidate(source, destination, matrix[source][destination]);
 			}
 			
 			if (candidates.size() == 0) 
@@ -196,7 +190,7 @@ public class WeightMatrix extends Matrix {
      */
     private void prefillPaths(int vertex, Path[] paths) {
     	for (int col = 0; col < size; col++) 
-    		paths[col] = new Path(vertex, root[vertex][col]);
+    		paths[col] = new Path(vertex, matrix[vertex][col]);
     }
     
     /**
@@ -217,7 +211,7 @@ public class WeightMatrix extends Matrix {
     			continue;
     		}
     		
-    		int edgeWeight = root[pathIndex][adjacent]; // weight of any edge connected to new path index
+    		int edgeWeight = matrix[pathIndex][adjacent]; // weight of any edge connected to new path index
     		int combinedWeight = pathWeight + edgeWeight; // combine path weight and new edge weight
     		int currentWeight = paths[adjacent].weight; // 
     		

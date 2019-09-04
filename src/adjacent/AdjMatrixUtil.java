@@ -1,8 +1,8 @@
-package graph;
+package adjacent;
 
 import java.util.HashMap;
 
-public class MatrixUtil {
+public class AdjMatrixUtil {
 	private static HashMap<String, Integer> visitedList;
 
 	/**

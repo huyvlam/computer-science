@@ -1,4 +1,4 @@
-package graph;
+package adjacent;
 
 import java.util.Arrays;
 

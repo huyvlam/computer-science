@@ -1,19 +1,15 @@
-package graph;
+package adjacent;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Stack;
+import java.util.Iterator;
 
-public class AdjacentList {
-	private int size;
-	private int[][] root;
-	private HashMap<Integer, Integer> visitedList = new HashMap<>();
-	private boolean isTransitiveClosure = false;
-
-	public AdjacentList(int size) {
-		this.size = size;
-		root = new int[size][size];
-	}
+public abstract class AdjListBase {
+	public int size;
+	public LinkedList<Edge>[] list;
+	public HashMap<Integer, Integer> visitedList = new HashMap<>();
+	public boolean isTransitiveClosure = false;
 
 	/**
 	 * List Breadth First Search
@@ -21,7 +17,7 @@ public class AdjacentList {
 	 * @param 	matrix - the 2D matrix to check
 	 * @return	list of connected vertex that was visited
 	 */
-	public Integer[] bfsTraverse(int index, int[][] adjList) {
+	public Integer[] bfsTraverse(int index) {
 		LinkedList<Integer> queue = new LinkedList<>();
 		LinkedList<Integer> processed = new LinkedList<>();
 
@@ -30,7 +26,7 @@ public class AdjacentList {
 		queue.push(index);
 		
 		while (!queue.isEmpty()) {
-			int unvisited = findUnvisited((int) queue.getLast(), adjList);
+			int unvisited = findUnvisited((int) queue.getLast());
 
 			if (unvisited == -1) 
 				processed.offer(queue.pollLast());
@@ -49,7 +45,7 @@ public class AdjacentList {
 	 * @param 	matrix - the 2D matrix to check
 	 * @return	list of connected vertex that was visited
      */
-    public Integer[] dfsTraverse(int index, int[][] adjList) {
+    public Integer[] dfsTraverse(int index) {
     	Stack<Integer> stack = new Stack<>();
     	LinkedList<Integer> processed = new LinkedList<>();
 
@@ -59,7 +55,7 @@ public class AdjacentList {
     	processed.offer(index);
     	
     	while (!stack.isEmpty()) {
-    		int unvisited = findUnvisited(stack.peek(), adjList);
+    		int unvisited = findUnvisited(stack.peek());
     		
     		if (unvisited == -1) 
     			stack.pop();
@@ -72,19 +68,45 @@ public class AdjacentList {
     	
     	return processed.toArray(new Integer[stack.size()]);
     }
+    
+	public void addEdge(int source, int dest, int weight) {
+		if (list[source] == null) 
+			list[source] = new LinkedList<Edge>();
 
-    public boolean hasVisited(int index) {
-    	return visitedList.containsKey(index);
+		list[source].offer(new Edge(source, dest, weight));
+	}
+
+	public boolean isEdge(int source, int dest) {
+    	Iterator iter = list[source].listIterator();
+    	
+    	while (iter.hasNext()) {
+    		Edge edge = (Edge) iter.next();
+    		if (edge.destination == dest) 
+    			return true;
+    	}
+    	return false;
     }
 	
-    private void resetVisitedList() {
+    public boolean isLast(int index) {
+		return index == size - 1;
+	}
+
+    public void initVisitedList() {
+    	visitedList = new HashMap<>();
+    }
+
+    public void resetVisitedList() {
     	visitedList.clear();
     }
-    
+
     // mark the index as visited once done to avoid cycle
-	private void addToVisited(int index) {
+	public void addToVisited(int index) {
 		visitedList.put(index, Vertex.VISITED);
 	}
+
+	public boolean hasVisited(int index) {
+    	return visitedList.containsKey(index);
+    }
 
 	/**
 	 * @desc	find the immediate adjacent from the adjacent list
@@ -92,12 +114,20 @@ public class AdjacentList {
 	 * @param 	adjList
 	 * @return
 	 */
-	private int findUnvisited(int index, int[][] adjList) {
-		int[] adjacents = adjList[index];
-		for (int adj: adjacents) 
-			if (!hasVisited(adj)) 
-				return adj;
+	public int findUnvisited(int index) {
+		LinkedList neighbors = list[index];
 		
+		if (neighbors != null) {
+			Iterator iter = list[index].listIterator();		
+
+			while (iter.hasNext()) {
+				Edge next = (Edge) iter.next();
+
+				if (!hasVisited(next.destination)) 
+					return next.destination;
+			}			
+		}
+
 		return -1;
 	}
 }

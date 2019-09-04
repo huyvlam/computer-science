@@ -1,9 +1,6 @@
 package demo;
 
 import graph.*;
-import java.util.HashMap;
-
-import java.util.PriorityQueue;
 
 public class GraphDemo {
 	public static void main(String[] args) {
@@ -18,35 +15,80 @@ public class GraphDemo {
 			{0, 0, 0, 0, 0, 0, 0, 1},
 			{0, 0, 0, 0, 0, 0, 0, 0}
 		};
-				
-		GraphDisplay graph = new GraphDisplay(vertices.length);
+		
+		demoListGraph(vertices, matrix);
+		demoMatrixGraph(vertices, matrix);
+		demoWeightGraph();
+	}
+	
+	public static void demoWeightGraph() {
+		String[] vertices = {"A","B","C","D"};
+		int[][] matrix = {
+				{0,0,0,0},
+				{70,0,0,10},
+				{30,0,0,0},
+				{0,0,20,0}
+		};
+		
+		WeightGraphDisplay graph = new WeightGraphDisplay(vertices.length);
 		graph.fillMatrix(matrix);
 		graph.fillVertices(vertices);
 		graph.printMatrix();
 
+		graph.printMinimumEdges();
+		System.out.println();
+
+		graph.printLightestPath("A");
+		System.out.println();
+		
+		graph.adjMatrix.allPairsLightestPath();
+		graph.printMatrix();		
+	}
+	
+	public static void demoListGraph(String[] vertices, int[][] matrix) {
+		GraphDisplay listGraph = new GraphDisplay(vertices.length);
+		listGraph.fillVertices(vertices);
+		listGraph.fillList(matrix);
+		listGraph.printList();
+		System.out.println();
+
 		String vertex = "E";
 
-		graph.printBFSTraverse(vertex);
+		listGraph.printBFSTraverse(vertex);
 		System.out.println();
-		graph.printDFSTraverse(vertex);
+		listGraph.printDFSTraverse(vertex);
+		System.out.println();
+	}
+
+	public static void demoMatrixGraph(String[] vertices, int[][] matrix) {				
+		MatrixGraphDisplay matrixGraph = new MatrixGraphDisplay(vertices.length);
+		matrixGraph.fillVertices(vertices);
+		matrixGraph.fillMatrix(matrix);
+		matrixGraph.printMatrix();
+
+		String vertex = "E";
+
+		matrixGraph.printBFSTraverse(vertex);
+		System.out.println();
+		matrixGraph.printDFSTraverse(vertex);
 		System.out.println();
 		
-		graph.printBFSConnectedComponents();
+		matrixGraph.printBFSConnectedComponents();
 		System.out.println();
-		graph.printDFSConnectedComponents();
+		matrixGraph.printDFSConnectedComponents();
 		System.out.println();
 
-		graph.printBFSMinimumEdges();
+		matrixGraph.printBFSMinimumEdges();
 		System.out.println();
-		graph.printDFSMinimumEdges();
+		matrixGraph.printDFSMinimumEdges();
 		System.out.println();
 		
-		graph.printBFSConnectivity();
+		matrixGraph.printBFSConnectivity();
 		System.out.println();
-		graph.printDFSConnectivity();
+		matrixGraph.printDFSConnectivity();
 		System.out.println();
 
-		graph.printTopology();
+		matrixGraph.printTopology();
 		System.out.println();
 	}
 }

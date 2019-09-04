@@ -1,4 +1,4 @@
-package graph;
+package adjacent;
 
 public class Path {
 	public int layover;

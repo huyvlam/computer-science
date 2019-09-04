@@ -1,30 +1,27 @@
-package weightgraph;
-
-import graph.Graph;
-import graph.Matrix;
-import graph.Vertex;
-import graph.Vertices;
+package graph;
 
 import java.util.PriorityQueue;
 
-import graph.Edge;
+import adjacent.WeightMatrix;
+import adjacent.Vertex;
+import adjacent.Vertices;
 
 public class WeightGraph {
 	public int size;
-	public WeightMatrix matrix;
+	public WeightMatrix adjMatrix;
 	public Vertices vertices;
-
+	
 	public WeightGraph(int size) {
 		this.size = size;
-		matrix = new WeightMatrix(size);
 		vertices = new Vertices(size);
+		adjMatrix = new WeightMatrix(size);
 	}
 
-	public void fillMatrix(int[][] adjMatrix) {
+	public void fillMatrix(int[][] matrix) {
 		for (int row = 0; row < size; row++) 
 			for (int col = 0; col < size; col++) 
-				if (adjMatrix[row][col] >= Vertex.CONNECTED) 
-					matrix.addEdge(row, col, adjMatrix[row][col]);
+				if (matrix[row][col] >= Vertex.CONNECTED) 
+					adjMatrix.addEdge(row, col, matrix[row][col]);
 	}
 	
     public void fillVertices(String[] vertList) {

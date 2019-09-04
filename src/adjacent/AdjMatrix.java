@@ -1,86 +1,12 @@
-package graph;
+package adjacent;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Stack;
 
-public class Matrix {
-	public int size;
-	public int[][] root;
-	private HashMap<Integer, Integer> visitedList;
-	private boolean isTransitiveClosure = false;
-	
-	public Matrix(int size) {
+public class AdjMatrix extends AdjMatrixBase {
+	public AdjMatrix(int size) {
 		this.size = size;
-		root = new int[size][size];
+		matrix = new int[size][size];
 	}
-	
-	public void addEdge(int source, int dest, int weight) {
-		root[source][dest] = weight;
-	}
-	
-	/**
-	 * Matrix Breadth First Search
-	 * @param 	index - starting point where traverse begin
-	 * @param 	matrix - the 2D matrix to check
-	 * @return	list of connected vertex that was visited
-	 */
-	public Integer[] bfsTraverse(int index) {
-		LinkedList<Integer> queue = new LinkedList<>();
-		LinkedList<Integer> processed = new LinkedList<>();
-		
-		if (!hasSuccessor(index)) 
-			return null;
-
-		initVisitedList();
-		addToVisited(index);
-		queue.push(index);
-		
-		while (!queue.isEmpty()) {
-			int unvisited = findUnvisited((int) queue.getLast());
-
-			if (unvisited == -1) 
-				processed.offer(queue.pollLast());
-			else {
-				addToVisited(unvisited);
-				queue.push(unvisited);
-			}
-		}
-    	
-		return processed.toArray(new Integer[processed.size()]);
-    }
-	
-    /**
-     * Matrix Depth First Search
-	 * @param 	index - starting point where traverse begin
-	 * @param 	matrix - the 2D matrix to check
-	 * @return	list of connected vertex that was visited
-     */
-    public Integer[] dfsTraverse(int index) {
-        Stack<Integer> stack = new Stack<>();
-        LinkedList<Integer> processed = new LinkedList<>();
-        
-        if (!hasSuccessor(index)) 
-        	return null;
-
-        initVisitedList();
-        addToVisited(index);
-        stack.push(index);
-        processed.offer(index);
-        
-        while (!stack.isEmpty()) {
-        	int unvisited = findUnvisited(stack.peek());
-        	if (unvisited == -1) 
-        		stack.pop();
-        	else {
-        		addToVisited(unvisited);
-        		stack.push(unvisited);
-        		processed.offer(unvisited);
-        	}
-        }
-
-        return processed.toArray(new Integer[processed.size()]);
-    }
     
 	/**
      * BFS Connected Components
@@ -196,43 +122,17 @@ public class Matrix {
     	if (isTransitiveClosure) 
     		return;
 
-    	for (int row = 0; row < root.length; row++) 
-    		for (int col = 0; col < root[row].length; col++) 
-    			if (root[row][col] >= Vertex.CONNECTED) {
-    				for (int vertex = 0; vertex < root.length; vertex++) 
-    					if (root[vertex][row] >= Vertex.CONNECTED) 
-    						root[vertex][col] = root[vertex][row];
+    	for (int row = 0; row < matrix.length; row++) 
+    		for (int col = 0; col < matrix[row].length; col++) 
+    			if (matrix[row][col] >= Vertex.CONNECTED) {
+    				for (int vertex = 0; vertex < matrix.length; vertex++) 
+    					if (matrix[vertex][row] >= Vertex.CONNECTED) 
+    						matrix[vertex][col] = matrix[vertex][row];
     				
     				break;
     			}
     }
     
-    /**
-     * @desc	iterate thru matrix and check each vertex for connection:
-     * 			1. if no connection -> vertex has no successor -> return -1
-     * 			2. if connection found -> return vertex index
-     * @return
-     */
-    public int findSuccessor() {
-    	boolean edge;
-
-    	for (int row = 0; row < size; row++) {
-    		edge = false;
-
-    		for (int col = 0; col < size; col++) {
-    			edge = isEdge(row, col);
-    			
-    			if (edge)
-    				break;
-    		}
-    		
-    		if (!edge) 
-    			return row;    		
-    	}
-
-    	return -1;
-    }
-
     /**
      * @desc	1. pivot row up by one at the specified index
      * 			2. pivot column left by one at the specified index
@@ -240,7 +140,7 @@ public class Matrix {
      */
     public void deleteVertex(int index) {
     	// if deleted is the last element -> no need to pivot, just decrement the size
-    	if (!lastIndex(index)) {
+    	if (!isLast(index)) {
         	pivotLeft(index);
         	pivotUp(index);
     	}
@@ -251,78 +151,30 @@ public class Matrix {
      * @desc	1. pivot the matrix one row up starting at the specified vertex
      * 			2. place the deleted row at the end
      * @param 	vertex index to delete
-     * @param 	matrix is where the vertex is removed from
+     * @param 	adjMatrix is where the vertex is removed from
      */
     private void pivotUp(int index) {
-    	int[] deleted = root[index];
+    	int[] deleted = matrix[index];
         for (int row = index; row < size; row++) 
-        	root[row] = root[(row + 1) % size];
+        	matrix[row] = matrix[(row + 1) % size];
         
-        root[size - 1] = deleted;
+        matrix[size - 1] = deleted;
     }
     
     /**
      * @desc	1. pivot the matrix one column over to the left starting at the specified vertex 
      * 			2. place the deleted col at the end
      * @param 	vertex index to delete
-     * @param 	matrix is where the vertex is removed from
+     * @param 	adjMatrix is where the vertex is removed from
      */
     private void pivotLeft(int index) {
 		for (int row = 0; row < size; row++) {
-			int deleted = root[row][index];
+			int deleted = matrix[row][index];
 
 			for (int col = index; col < size - 1; col++)
-    			root[row][col] = root[row][col + 1];
+    			matrix[row][col] = matrix[row][col + 1];
 
-			root[row][size - 1] = deleted;
+			matrix[row][size - 1] = deleted;
 		}
     }
-    
-    public boolean hasSuccessor(int index) {
-    	for (int neighbor: root[index]) 
-    		if (neighbor == 1) 
-    			return true;
-    	
-    	return false;
-    }
-    
-    public boolean isEdge(int vertA, int vertB) {
-    	return root[vertA][vertB] >= Vertex.CONNECTED;
-    }
-    
-    public boolean hasVisited(int index) {
-    	return visitedList.containsKey(index);
-    }
-	
-    private void initVisitedList() {
-    	visitedList = new HashMap<>();
-    }
-    
-    // mark the index as visited once done to avoid cycle
-	private void addToVisited(int index) {
-		visitedList.put(index, Vertex.VISITED);
-	}
-
-	/**
-	 * @desc	find the immediate adjacent that has not been visited
-	 * @param index
-	 * @param matrix
-	 * @return -1 not found | vertex index
-	 */
-	private int findUnvisited(int index) {
-		// this ensure the index is not an element that has been pivoted to end of the list to mark as deleted
-		if (index >= size) 
-			return -1;
-
-		int[] neighbors = root[index];
-		for (int adj = 0; adj < size; adj++) 
-			if (neighbors[adj] >= Vertex.CONNECTED && !hasVisited(adj)) 
-				return adj;
-		
-		return -1;
-	}
-	
-	private boolean lastIndex(int index) {
-		return index == size - 1;
-	}
 }

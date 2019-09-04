@@ -1,8 +1,11 @@
-package weightgraph;
+package graph;
 
 import graph.*;
 
 import java.util.Arrays;
+
+import adjacent.Edge;
+import adjacent.Path;
 
 public class WeightGraphDisplay extends WeightGraph {
 	public WeightGraphDisplay(int size) {
@@ -11,7 +14,7 @@ public class WeightGraphDisplay extends WeightGraph {
 	
 	public void printLightestPath(String vertName) {
 		int index = vertices.findIndex(vertName);
-		Path[] paths = matrix.lightestPath(index);
+		Path[] paths = adjMatrix.lightestPath(index);
 		
 		System.out.println("- Lightest Path [single source] -");
 		for (int i = 0; i < paths.length; i++) {
@@ -25,7 +28,7 @@ public class WeightGraphDisplay extends WeightGraph {
 	}
 	
 	public void printMinimumEdges() {
-        Edge[] edges = matrix.minimumEdges();
+        Edge[] edges = adjMatrix.minimumEdges();
         
         if (edges == null) 
             System.out.println("- No minimum span tree -");
@@ -48,7 +51,7 @@ public class WeightGraphDisplay extends WeightGraph {
     		System.out.print(" - ");
 
     		for (int col = 0; col < size; col++) {
-    			System.out.print(matrix.root[row][col]);
+    			System.out.print(adjMatrix.matrix[row][col]);
 
     			if (col < size - 1) 
     				System.out.print(", ");
