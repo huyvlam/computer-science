@@ -9,10 +9,17 @@ import heap.*;
 public class HeapDemo {
 	public static void main(String[] args) {
 		demoMedianHeap();
+		demoHeap();
 	}
 	
 	public static void demoHeap() {
-		Heap heap = new Heap();
+		Heap heap = new Heap(10);
+		Random random = new Random();
+
+		for (int i = 0; i < 10; i++) 
+			heap.add(random.nextInt(100));
+		
+		heap.printHeap();
 	}
 
 	public static void demoMedianHeap() {
