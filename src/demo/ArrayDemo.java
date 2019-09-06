@@ -9,7 +9,13 @@ public class ArrayDemo {
 //		matchSequence();
 //		valueToIndex();
 //		segregateByValue();
-		findRepeated();
+//		findRepeated();
+		maximumSubarray();
+	}
+	
+	public static void maximumSubarray() {
+		int sum = Subarray.maxSum(Arrays.asList(2,-10,11,3,4,-5,1));
+		System.out.println("Maximum Subarray " + sum);
 	}
 	
 	public static void findRepeated() {
