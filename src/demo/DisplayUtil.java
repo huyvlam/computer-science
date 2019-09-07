@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 import java.util.Random;
 
-public class DemoUtil {
+public class DisplayUtil {
     public static int[] createIntArray(int size) {
         HashMap<Integer, Boolean> map = new HashMap<>();
         Random random = new Random();
@@ -28,12 +28,22 @@ public class DemoUtil {
     }
     
     public static <T> void printArray(T[] list) {
-    	for (T item: list) 
-    		System.out.println(item);
+    	for (int i = 0; i < list.length; i++) {
+    		System.out.print(list[i]);
+    		if (!isLast(i, list)) 
+    			System.out.print(", ");
+    	}
     }
     
-    public static void printIntArray(int[] A) {
-    	for (int a: A) 
-    		System.out.print(a + " ");
+    public static void printIntArray(int[] list) {
+    	for (int i = 0; i < list.length; i++) {
+    		System.out.print(list[i]);
+    		if (i < list.length - 1) 
+    			System.out.print(", ");
+    	}
+    }
+    
+    private static <T> boolean isLast(int index, T[] list) {
+    	return index == list.length - 1;
     }
 }

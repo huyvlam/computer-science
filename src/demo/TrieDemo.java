@@ -17,6 +17,6 @@ public class TrieDemo {
 		trie.traverse();
 
 		String[] dictionary = trie.generateDictionary();
-		DemoUtil.printArray(dictionary);
+		DisplayUtil.printArray(dictionary);
 	}
 }
